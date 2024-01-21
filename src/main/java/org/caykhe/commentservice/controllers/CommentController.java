@@ -27,7 +27,7 @@ public class CommentController {
         return new ResponseEntity<>(createdComment, HttpStatus.CREATED);
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public ResponseEntity<?> delete(HttpServletRequest request, @RequestParam(name = "targetId") Integer targetId,
                                     @RequestParam(required = false, name = "type", defaultValue = "false") boolean type) {
         commentService.deleteComment(request.getHeader("Authorization"), targetId, type);
