@@ -26,19 +26,19 @@ public class CommentService {
     private final ContentService contentService;
     private final ImageService imageService;
 
-    public Comment create(Integer targetId, boolean isSeries) {
+    public Comment create(Integer targetId, boolean type) {
 
         var comment = Comment
                 .builder()
                 .targetId(targetId)
-                .type(isSeries)
+                .type(type)
                 .build();
 
         return commentRepository.save(comment);
     }
 
-    public void deleteComment(String token, Integer targetId, boolean isSeries) {
-        Comment comment = commentRepository.findByTargetIdAndType(targetId, isSeries)
+    public void deleteComment(String token, Integer targetId, boolean type) {
+        Comment comment = commentRepository.findByTargetIdAndType(targetId, type)
                 .orElseThrow(() -> new ApiException("Comment không tồn tại", HttpStatus.NOT_FOUND));
         List<CommentDetails> listSubCom = commentDetailsRepository.findByComment(comment);
         for (CommentDetails subComment: listSubCom) {
