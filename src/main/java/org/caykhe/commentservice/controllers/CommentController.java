@@ -22,15 +22,15 @@ public class CommentController {
 
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestParam(name = "targetId") Integer targetId,
-                                    @RequestParam(required = false, name = "isSeries", defaultValue = "false") boolean isSeries) {
-        Comment createdComment = commentService.create(targetId, isSeries);
-        return new ResponseEntity<>(createdComment, HttpStatus.OK);
+                                    @RequestParam(required = false, name = "type", defaultValue = "false") boolean type) {
+        Comment createdComment = commentService.create(targetId, type);
+        return new ResponseEntity<>(createdComment, HttpStatus.CREATED);
     }
 
     @PostMapping("/delete")
     public ResponseEntity<?> delete(HttpServletRequest request, @RequestParam(name = "targetId") Integer targetId,
-                                    @RequestParam(required = false, name = "isSeries", defaultValue = "false") boolean isSeries) {
-        commentService.deleteComment(request.getHeader("Authorization"), targetId, isSeries);
+                                    @RequestParam(required = false, name = "type", defaultValue = "false") boolean type) {
+        commentService.deleteComment(request.getHeader("Authorization"), targetId, type);
         return ResponseEntity.noContent().build();
     }
 
@@ -52,7 +52,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/{targetId}/{type}/{subId}/delete")
-    public ResponseEntity<?> addSubcomment(HttpServletRequest request, @PathVariable Integer targetId,@PathVariable Integer subId, @PathVariable boolean type) {
+    public ResponseEntity<?> removeSubcomment(HttpServletRequest request, @PathVariable Integer targetId,@PathVariable Integer subId, @PathVariable boolean type) {
 
         boolean result = commentService.removeSubComment(request.getHeader("Authorization"), targetId, subId, type);
         return new ResponseEntity<>(result, HttpStatus.OK);
